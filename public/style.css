@@ -15,6 +15,21 @@
   
 }
 
+/* BLOCKS */
+
+.block {
+  width: 100px;
+  height: auto;
+  position: absolute;
+  top: 45vh;
+  left: 5vw;
+}
+#blocks>.block:nth-child(1) { transform:rotate(-4deg); left: 7vw; top: 46vh; }
+#blocks>.block:nth-child(2) { transform:rotate(2deg); left: 8vw; top: 49vh; }
+#blocks>.block:nth-child(3) { transform:rotate(-5deg); left: 2vw; top: 49vh; }
+#blocks>.block:nth-child(4) { transform:rotate(-2deg); left: 4vw; top: 50vh; }
+#blocks>.block:nth-child(5) { transform:rotate(6deg); left: 3vw; top: 47vh; }
+
 /* FOOTER */
 #tube {
   width: 80%;
