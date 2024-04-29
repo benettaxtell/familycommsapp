@@ -1,39 +1,48 @@
-
-#connection {
-  margin-top: 90vh;
-  height: 50px;
-}
-
-#connection>div {
-	float:left;
-}
-
 #tube {
   width: 80%;
   height: 50px;
-  margin-top: 90vh;
+  position: absolute;
+  top: 90vh;
   margin-left: 10%;
   background: #2d00b3;
+  z-index: 100;
 }
 #tube:before {
   content: '';
   position: absolute;
-  top: 87vh;
-  left: 5%;
+  top: -3vh;
+  left: -5%;
   height: 50px;
   width: 5%;
   border-top: 50px solid transparent;
   border-left: 200px solid #2d00b3;
   border-bottom: 50px solid transparent;
+  z-index: inherit;
 }
 #tube:after {
   content: '';
   position: absolute;
-  top: 87vh;
-  right: 5%;
+  top: -3vh;
+  right: -5%;
   height: 50px;
   width: 5%;
   border-top: 50px solid transparent;
   border-right: 200px solid #2d00b3;
   border-bottom: 50px solid transparent;
+  z-index: inherit;
+}
+
+.avatar {
+  width: 10%;
+  height: auto;
+  position: absolute;
+  top: 70vh;
+}
+
+#me {
+  left: 2vw;
+}
+
+#you {
+  right: 2vw;
 }
