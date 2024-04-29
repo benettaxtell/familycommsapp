@@ -1,3 +1,21 @@
+/* GEN */
+.btn{
+  --bs-btn-border-width: 3px;
+}
+
+.button-img{
+  width: 75px;
+  height: auto;
+}
+
+#new-drawing{
+  position: absolute;
+  top: 10vh;
+  left: calc(50vw - 40px);  
+  
+}
+
+/* FOOTER */
 #tube {
   width: 80%;
   height: 50px;
