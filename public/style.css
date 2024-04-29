@@ -65,6 +65,36 @@
   z-index: inherit;
 }
 
+#broken-tube {
+  width: 0;
+  height: 0;
+  border: 50px solid transparent;
+  border-right: 75px solid white;
+  position: relative;
+  top: 87vh;
+  left: 42vw;
+  z-index: 101;
+  
+  display: none;
+}
+#broken-tube:before {
+  content: '';
+  position: absolute;
+  top: -50px;
+  left: 75px;
+  width: 0;
+  height: 0;
+  border: 50px solid transparent;
+  border-left: 75px solid white;
+  z-index: inherit;
+  
+  display: none;
+}
+
+#broken-tube.off, #broken-tube.off:before {
+  display: inline-block;
+}
+
 .avatar {
   width: 10%;
   height: auto;
@@ -78,4 +108,9 @@
 
 #you {
   right: 2vw;
+}
+
+/** CONNECTION **/
+.avatar.off {
+	display:none;
 }
