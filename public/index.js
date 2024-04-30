@@ -56,7 +56,7 @@ function openNewDrawing(event) {
 function handleWritingStart(event) {
   event.preventDefault();
 
-  const mousePos = getMosuePositionOnCanvas(event);
+  const mousePos = getMousePositionOnCanvas(event);
   
   canvasContext.beginPath();
 
@@ -76,7 +76,7 @@ function handleWritingInProgress(event) {
   event.preventDefault();
   
   if (state.mousedown) {
-    const mousePos = getMosuePositionOnCanvas(event);
+    let mousePos = getMousePositionOnCanvas(event);
 
     canvasContext.lineTo(mousePos.x, mousePos.y);
     canvasContext.stroke();
@@ -113,12 +113,12 @@ function finishDrawingAndClose(event) {
 // ======================
 // == Helper Functions ==
 // ======================
-function getMosuePositionOnCanvas(event) {
-  const clientX = event.clientX || event.touches[0].clientX;
-  const clientY = event.clientY || event.touches[0].clientY;
-  const { offsetLeft, offsetTop } = event.target;
-  const canvasX = clientX - offsetLeft;
-  const canvasY = clientY - offsetTop;
+function getMousePositionOnCanvas(event) {
+  let clientX = event.clientX || event.touches[0].clientX;
+  let clientY = event.clientY || event.touches[0].clientY;
+  let { offsetLeft, offsetTop } = event.target;
+  let canvasX = clientX - offsetLeft;
+  let canvasY = clientY - offsetTop;
 
   return { x: canvasX, y: canvasY };
 }
