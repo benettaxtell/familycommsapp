@@ -114,3 +114,26 @@
 .avatar.off {
 	display:none;
 }
+
+/** DRAWING **/
+#drawing {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 95vh;
+}
+
+.drawing-area {
+  display: inherit;
+  background: #FFF;
+  box-shadow: 0 0 6px 0 #999;
+  z-index: 50;
+}
+
+.clear-button {
+  display: inherit;
+  margin: 2em;
+  font-size: 16px;
+}
+
