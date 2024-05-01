@@ -150,7 +150,23 @@
 }
 
 .buttons > button {
-	float: left;
+  float: left;
+}
+
+#colours > button {
+  width: 40px;
+  height: 40px;
+  background-color: red;
+}
+
+#colours > #yellow-pencil {
+  background-color: yellow;
+}
+#colours > #green-pencil {
+  background-color: green;
+}
+#colours > #blue-pencil {
+  background-color: blue;
 }
 
 /** MESSAGE PIECES **/

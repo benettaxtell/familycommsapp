@@ -14,6 +14,8 @@ canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 const clearDrawing = $('#clear-drawing');
 const doneDrawing = $('#done-drawing');
 const drawButton = $('#new-drawing-btn');
+const colourButton = $('#colours>button');
+
 
 const state = {
   mousedown: false
@@ -24,8 +26,7 @@ const state = {
 // ===================
 const lineWidth = 10;
 const halfLineWidth = lineWidth / 2;
-const fillStyle = '#333';
-const strokeStyle = '#333';
+let strokeStyle = '#333';
 
 // =====================
 // == Event Listeners ==
@@ -43,6 +44,7 @@ canvas.addEventListener('touchend', handleDrawingEnd);
 clearDrawing.on('click', handleClearButtonClick);
 doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
+colourButton.on('click', changeColour);
 
 
 // ====================
@@ -109,6 +111,13 @@ function finishDrawingAndClose(event) {
   $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + canvasUrl + "' /></div>");
   
   clearDrawing.click()
+}
+
+//set stroke style to the chosen colour based on data-fill attr (#RGB)
+function changeColour(event) {
+  event.preventDefault()
+  let colour = $(this).attr('data-fill');
+  strokeStyle = colour;
 }
 
 // ======================
