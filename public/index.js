@@ -7,11 +7,13 @@
 //DRAWING
 const canvas = document.getElementById('drawing-area');
 const canvasContext = canvas.getContext('2d');
+canvasContext.fillStyle = "white";
+canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 
 //BUTTONS
-const clearDrawing = document.getElementById('clear-drawing');
-const doneDrawing = document.getElementById('done-drawing');
-const drawButton = document.getElementById('new-drawing');
+const clearDrawing = $('#clear-drawing');
+const doneDrawing = $('#done-drawing');
+const drawButton = $('#new-drawing-btn');
 
 const state = {
   mousedown: false
@@ -40,17 +42,17 @@ canvas.addEventListener('touchstart', handleWritingStart);
 canvas.addEventListener('touchmove', handleWritingInProgress);
 canvas.addEventListener('touchend', handleDrawingEnd);
 
-clearDrawing.addEventListener('click', handleClearButtonClick);
-doneDrawing.addEventListener('click', finishDrawingAndClose);
-drawButton.addEventListener('click', openNewDrawing);
+clearDrawing.on('click', handleClearButtonClick);
+doneDrawing.on('click', finishDrawingAndClose);
+drawButton.on('click', openNewDrawing);
 
 
 // ====================
 // == Event Handlers ==
 // ====================
 function openNewDrawing(event) {
-	event.preventDefault();
-	document.getElementById('drawing').style.display = 'flex';
+  event.preventDefault();
+  document.getElementById('drawing').style.display = 'flex';
 }
 
 function handleWritingStart(event) {
@@ -100,14 +102,17 @@ function handleClearButtonClick(event) {
   event.preventDefault();
   
   clearCanvas();
-  document.getElementById('drawing').style.display = 'none';
+  $('#drawing').attr('style',{'display':'none'});
 }
 
 function finishDrawingAndClose(event) {
   event.preventDefault();
+ 
   
-  //TODO: "save" drawing, for now just hides
-  document.getElementById('drawing').style.display = 'none';
+  let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
+  $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + canvasUrl + "' /></div>");
+  
+  clearDrawing.click()
 }
 
 // ======================
