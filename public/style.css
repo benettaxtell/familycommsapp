@@ -1,11 +1,23 @@
 /* GEN */
-.btn{
-  --bs-btn-border-width: 3px;
+.sketch{
+  padding:0.5rem 0.5rem;
+  margin:0 0.5rem;
+  font-size:1rem;
+
+  border-top-left-radius: 255px 15px;
+  border-top-right-radius: 15px 225px;
+  border-bottom-right-radius: 225px 15px;
+  border-bottom-left-radius:15px 255px;
+  border:solid 3px #41403E;
+}
+.msg-btn {
+  width: 125px;
+  height: 125px;
 }
 
 .button-img{
-  width: 75px;
-  height: auto;
+  height: 100px;
+  width: auto;
 }
 
 #new-drawing{
