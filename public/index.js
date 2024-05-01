@@ -22,12 +22,10 @@ const state = {
 // ===================
 // == Configuration ==
 // ===================
-const lineWidth = 20;
+const lineWidth = 10;
 const halfLineWidth = lineWidth / 2;
 const fillStyle = '#333';
 const strokeStyle = '#333';
-const shadowColor = '#333';
-const shadowBlur = lineWidth / 4;
 
 // =====================
 // == Event Listeners ==
@@ -65,9 +63,8 @@ function handleWritingStart(event) {
   canvasContext.moveTo(mousePos.x, mousePos.y);
 
   canvasContext.lineWidth = lineWidth;
+
   canvasContext.strokeStyle = strokeStyle;
-  canvasContext.shadowColor = null;
-  canvasContext.shadowBlur = null;
 
   canvasContext.fill();
   
@@ -89,9 +86,6 @@ function handleDrawingEnd(event) {
   event.preventDefault();
   
   if (state.mousedown) {
-    canvasContext.shadowColor = shadowColor;
-    canvasContext.shadowBlur = shadowBlur;
-
     canvasContext.stroke();
   }
   
@@ -107,7 +101,9 @@ function handleClearButtonClick(event) {
 
 function finishDrawingAndClose(event) {
   event.preventDefault();
- 
+  canvasContext.beginPath();
+  canvasContext.rect(0, 0, 1000, 500);
+  canvasContext.stroke();
   
   let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
   $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + canvasUrl + "' /></div>");

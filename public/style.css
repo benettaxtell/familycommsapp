@@ -173,4 +173,11 @@
   top: -100px;
   left: 50px;
   transform: skew(5deg, -5deg);
+  animation: newpiece 3s;
 }
+
+@keyframes newpiece
+  {
+    from {left: 45vw;} 
+    to{left:50px;} 
+  }
