@@ -103,6 +103,7 @@ function handleClearButtonClick(event) {
 
 function finishDrawingAndClose(event) {
   event.preventDefault();
+  canvasContext.strokeStyle = '#333';
   canvasContext.beginPath();
   canvasContext.rect(0, 0, 1000, 500);
   canvasContext.stroke();
