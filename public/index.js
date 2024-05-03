@@ -21,9 +21,9 @@ const state = {
   mousedown: false
 };
 
-// ===================
-// == Configuration ==
-// ===================
+// ==========================
+// == Canvas Configuration ==
+// ==========================
 const lineWidth = 10;
 const halfLineWidth = lineWidth / 2;
 let strokeStyle = '#333';
@@ -31,7 +31,6 @@ let strokeStyle = '#333';
 // =====================
 // == Event Listeners ==
 // =====================
-
 canvas.addEventListener('mousedown', handleWritingStart);
 canvas.addEventListener('mousemove', handleWritingInProgress);
 canvas.addEventListener('mouseup', handleDrawingEnd);
@@ -50,11 +49,14 @@ colourButton.on('click', changeColour);
 // ====================
 // == Event Handlers ==
 // ====================
+
+//Show drawing canvas
 function openNewDrawing(event) {
   event.preventDefault();
   document.getElementById('drawing').style.display = 'flex';
 }
 
+//Set canvas stroke and set mousedown
 function handleWritingStart(event) {
   event.preventDefault();
 
@@ -73,6 +75,7 @@ function handleWritingStart(event) {
   state.mousedown = true;
 }
 
+//Draw ongoing stroke on canvas
 function handleWritingInProgress(event) {
   event.preventDefault();
   
@@ -84,6 +87,7 @@ function handleWritingInProgress(event) {
   }
 }
 
+//Set mousedown to false
 function handleDrawingEnd(event) {
   event.preventDefault();
   
@@ -94,6 +98,7 @@ function handleDrawingEnd(event) {
   state.mousedown = false;
 }
 
+//Empty canvas and hide
 function handleClearButtonClick(event) {
   event.preventDefault();
   
@@ -101,6 +106,7 @@ function handleClearButtonClick(event) {
   $('#drawing').attr('style',{'display':'none'});
 }
 
+//Add drawing border, "save" as img, add as message piece, then clear and hide canvas
 function finishDrawingAndClose(event) {
   event.preventDefault();
   canvasContext.strokeStyle = '#333';
@@ -109,7 +115,7 @@ function finishDrawingAndClose(event) {
   canvasContext.stroke();
   
   let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
-  $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + canvasUrl + "' /></div>");
+  addMsgPiece(canvasUrl)
   
   clearDrawing.click()
 }
@@ -124,6 +130,12 @@ function changeColour(event) {
 // ======================
 // == Helper Functions ==
 // ======================
+
+//Add new divs for a msg piece showing the given msg
+function addMsgPiece(msg) {
+  $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");
+}
+
 function getMousePositionOnCanvas(event) {
   let clientX = event.clientX || event.touches[0].clientX;
   let clientY = event.clientY || event.touches[0].clientY;
@@ -136,4 +148,6 @@ function getMousePositionOnCanvas(event) {
 
 function clearCanvas() {
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
+  canvasContext.fillStyle = "white";
+  canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 }
