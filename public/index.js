@@ -45,7 +45,6 @@ doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
 colourButton.on('click', changeColour);
 
-
 // ====================
 // == Event Handlers ==
 // ====================
@@ -103,7 +102,7 @@ function handleClearButtonClick(event) {
   event.preventDefault();
   
   clearCanvas();
-  $('#drawing').attr('style',{'display':'none'});
+  $('#drawing').css('display', 'none');
 }
 
 //Add drawing border, "save" as img, add as message piece, then clear and hide canvas
@@ -127,6 +126,14 @@ function changeColour(event) {
   strokeStyle = colour;
 }
 
+//Display build options
+function openBuildOptions(event) {
+  event.preventDefault()
+  
+  $('#choose-blocks').css('display', 'flex');
+
+}
+
 // ======================
 // == Helper Functions ==
 // ======================
@@ -134,6 +141,8 @@ function changeColour(event) {
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
   $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");
+  
+  $('.msg_piece').on('click', openBuildOptions);
 }
 
 function getMousePositionOnCanvas(event) {

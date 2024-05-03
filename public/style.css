@@ -22,13 +22,27 @@
 
 #new-drawing-btn{
   position: absolute;
-  top: 10vh;
-  left: calc(50vw - 40px);  
-  
+  top: 5vh;
+  left: calc(50vw - 40px);   
+}
+
+.make-msg {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 95vh;
+}
+
+.overlay {
+  display: inherit;
+  width: 70vw;
+  height: 65vh;
+  z-index: 50;
+  background: #FFF;
 }
 
 /* BLOCKS */
-
 .block {
   width: 100px;
   height: auto;
@@ -122,27 +136,7 @@
   right: 2vw;
 }
 
-/** CONNECTION **/
-.avatar.off {
-	display:none;
-}
-
 /** DRAWING **/
-#drawing {
-  display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  min-height: 95vh;
-}
-
-.drawing-area {
-  display: inherit;
-  background: #FFF;
-  box-shadow: 0 0 6px 0 #999;
-  z-index: 50;
-}
-
 .clear-button {
   display: inherit;
   margin: 2em;
@@ -167,6 +161,11 @@
 }
 #colours > #blue-pencil {
   background-color: blue;
+}
+
+/** CONNECTION **/
+.avatar.off {
+	display:none;
 }
 
 /** MESSAGE PIECES **/
@@ -201,3 +200,7 @@
     from {left: 45vw;} 
     to{left:50px;} 
   }
+  
+/** MAKING MESSAGE **/
+.build-option {
+}

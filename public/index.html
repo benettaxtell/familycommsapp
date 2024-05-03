@@ -25,8 +25,8 @@
 	</section>	
 	</section>
 	
-	<section id="drawing" class="drawing">
-		<canvas id="drawing-area" class="drawing-area sketch" height="500" width="1000"></canvas>
+	<section id="drawing" class="drawing make-msg">
+		<canvas id="drawing-area" class="drawing-area overlay sketch"  height="500" width="1000"></canvas>
 		<div class='buttons' id='colours'>
 			<button id="red-pencil" type="button" class="btn color-btn" data-fill="#F00"></button>
 			<button id="yellow-pencil" type="button" class="btn color-btn" data-fill="#FF0"></button>
@@ -36,6 +36,12 @@
 		<div class='buttons'>
 			<button id="clear-drawing" type="button" class="btn btn-outline-dark">CLEAR</button>
 			<button id="done-drawing" type="button" class="btn btn-outline-dark">DONE</button>
+		</div>
+	</section>
+	
+	<section id="choose-blocks" class="make-msg">
+		<div id="built-blocks" class="overlay sketch">
+			<img id="castle" class="build-option" src="img/castle.png" />
 		</div>
 	</section>
 	
