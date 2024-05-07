@@ -4,6 +4,9 @@
 // == Globals ==
 // =============
 
+//VARIOUS VARIABLES
+let piece_i = 0
+
 //DRAWING
 const canvas = document.getElementById('drawing-area');
 const canvasContext = canvas.getContext('2d');
@@ -140,7 +143,8 @@ function openBuildOptions(event) {
 
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
-  $('#message').append("<div class='msg_piece'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");
+  piece_i += 1
+  $('#message').append("<div class='msg_piece' id='msg_piece"+piece_i+"'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");
   
   $('.msg_piece').on('click', openBuildOptions);
 }
