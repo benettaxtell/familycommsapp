@@ -6,6 +6,8 @@
 
 //VARIOUS VARIABLES
 let piece_i = 0
+let hasMsgPiece = false;
+let buildingMsg = false;
 
 //DRAWING
 const canvas = document.getElementById('drawing-area');
@@ -47,6 +49,7 @@ clearDrawing.on('click', handleClearButtonClick);
 doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
 colourButton.on('click', changeColour);
+$('#message').on('click', openBuildOptions);
 
 // ====================
 // == Event Handlers ==
@@ -55,6 +58,9 @@ colourButton.on('click', changeColour);
 //Show drawing canvas
 function openNewDrawing(event) {
   event.preventDefault();
+  if(buildingMsg) {
+    return false;
+  }
   document.getElementById('drawing').style.display = 'flex';
 }
 
@@ -132,9 +138,15 @@ function changeColour(event) {
 //Display build options
 function openBuildOptions(event) {
   event.preventDefault()
+  if(!hasMsgPiece || buildingMsg) {
+	  return false;
+  }
   
+  $('#message .msg_piece').clone().appendTo('#pieces');
   $('#choose-blocks').css('display', 'flex');
-
+  
+  //to stop cloning msg pieces on again and again
+  buildingMsg = true;
 }
 
 // ======================
@@ -143,10 +155,9 @@ function openBuildOptions(event) {
 
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
+  hasMsgPiece = true;
   piece_i += 1
-  $('#message').append("<div class='msg_piece' id='msg_piece"+piece_i+"'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");
-  
-  $('.msg_piece').on('click', openBuildOptions);
+  $('#message').append("<div class='msg_piece' id='msg_piece"+piece_i+"'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");  
 }
 
 function getMousePositionOnCanvas(event) {

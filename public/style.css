@@ -172,30 +172,32 @@
 .msg_piece {
   width: 175px;
   height: 175px;
+}
+#message .msg_piece {
   position: absolute;
   top: 47vh;
   left: 5vw;
 }
 
-#msg_piece1{
+#message #msg_piece1{
   top: 50vh;
   left: 5vw;
   z-index: 25;
 }
 
-#msg_piece2{
+#message #msg_piece2{
   top: 46vh;
   left: 7vw;
   z-index: 24;
 }
 
-#msg_piece3{
+#message #msg_piece3{
   top: 43vh;
   left: 3vw;
   z-index: 23;
 }
 
-#msg_piece4{
+#message #msg_piece4{
   top: 40vh;
   left: 8vw;
   z-index: 22;
@@ -216,7 +218,9 @@
   top: -100px;
   left: 35px;
   transform: rotateY(-30deg) rotateX(6deg) rotateZ(-5deg);
-  animation: newpiece 2s;
+}
+#message .drawing_msg{
+  animation: newpiece 2s;	
 }
 
 @keyframes newpiece
@@ -226,5 +230,18 @@
   }
   
 /** MAKING MESSAGE **/
+#built-blocks {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+}
+
+#pieces {
+  display: flex;
+  flex-flow: column nowrap;
+}
+
 .build-option {
+  width: 45%;
+  height: auto;
 }
