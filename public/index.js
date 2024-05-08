@@ -19,7 +19,7 @@ canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 const clearDrawing = $('#clear-drawing');
 const doneDrawing = $('#done-drawing');
 const drawButton = $('#new-drawing-btn');
-const colourButton = $('#colours>button');
+const colourButton = $('#crayons .crayon');
 
 
 const state = {

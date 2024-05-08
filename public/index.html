@@ -27,11 +27,22 @@
 	
 	<section id="drawing" class="drawing make-msg">
 		<canvas id="drawing-area" class="drawing-area overlay sketch"  height="500" width="1000"></canvas>
-		<div class='buttons' id='colours'>
-			<button id="red-pencil" type="button" class="btn color-btn" data-fill="#F00"></button>
-			<button id="yellow-pencil" type="button" class="btn color-btn" data-fill="#FF0"></button>
-			<button id="green-pencil" type="button" class="btn color-btn" data-fill="#0F0"></button>
-			<button id="blue-pencil" type="button" class="btn color-btn"  data-fill="#00F"></button>
+		<div  id='crayons'>
+			<div id="red-crayon" class="crayon" data-fill="#F00">
+				<div class="crayon crayon-top"></div><div class="crayon crayon-mid"></div><div class="crayon crayon-paper"></div>
+			</div>
+			<div id="yellow-crayon" class="crayon" data-fill="#FF0">
+				<div class="crayon crayon-top"></div><div class="crayon crayon-mid"></div><div class="crayon crayon-paper"></div>
+			</div>
+			<div id="green-crayon" class="crayon" data-fill="#0F0">
+				<div class="crayon crayon-top"></div><div class="crayon crayon-mid"></div><div class="crayon crayon-paper"></div>
+			</div>
+			<div id="blue-crayon" class="crayon" data-fill="#00D">
+				<div class="crayon crayon-top"></div><div class="crayon crayon-mid"></div><div class="crayon crayon-paper"></div>
+			</div>
+			<div id="black-crayon" class="crayon" data-fill="#111">
+				<div class="crayon crayon-top"></div><div class="crayon crayon-mid"></div><div class="crayon crayon-paper"></div>
+			</div>
 		</div>
 		<div class='buttons'>
 			<button id="clear-drawing" type="button" class="btn btn-outline-dark">CLEAR</button>
