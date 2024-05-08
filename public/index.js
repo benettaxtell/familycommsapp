@@ -133,6 +133,8 @@ function changeColour(event) {
   event.preventDefault()
   let colour = $(this).attr('data-fill');
   strokeStyle = colour;
+  $('.crayon-paper').removeClass('selected');
+  $(this).find('.crayon-paper').addClass('selected');
 }
 
 //Display build options

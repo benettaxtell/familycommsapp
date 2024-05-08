@@ -150,10 +150,26 @@
 #crayons {
   position: relative;
   bottom: 60px;
-  width: 65vw;
-  
+  width: 60vw;
+  height: 80px;
   display: flex;
   flex-flow: row nowrap;
+  align-items: flex-end;
+  
+  z-index: 51;
+}
+#crayons:before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -25px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 25px 25px 0;
+  border-color: transparent black;
+
+  z-index: inherit;
 }
 
 .crayon {
@@ -161,7 +177,7 @@
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  z-index: 51;
+  z-index: inherit;
 }
 .crayon-top{
   width: 35px;
@@ -184,6 +200,7 @@
   height: 20px;
   
   z-index: inherit;
+  border-bottom: 5px solid black;
 }
 
 #red-crayon .crayon-top{
@@ -235,6 +252,18 @@
 #black-crayon .crayon-paper {
   background: #444;
 }
+
+.crayon-paper.selected {
+  animation: crayon-up 1s;
+  height: 40px;
+}
+
+@keyframes crayon-up
+  {
+    from {height:20px;} 
+    to{height:40px;} 
+  }
+
 /** CONNECTION **/
 .avatar.off {
 	display:none;
