@@ -31,7 +31,8 @@ const state = {
 // ==========================
 const lineWidth = 10;
 const halfLineWidth = lineWidth / 2;
-let strokeStyle = '#333';
+let strokeStyle = '#111';
+let shadowColor = '#333';
 
 // =====================
 // == Event Listeners ==
@@ -71,13 +72,13 @@ function handleWritingStart(event) {
   const mousePos = getMousePositionOnCanvas(event);
   
   canvasContext.beginPath();
-
   canvasContext.moveTo(mousePos.x, mousePos.y);
 
   canvasContext.lineWidth = lineWidth;
-
   canvasContext.strokeStyle = strokeStyle;
-
+  canvasContext.shadowColor = shadowColor;
+  canvasContext.lineCap = 'round';
+  canvasContext.shadowBlur = 3;
   canvasContext.fill();
   
   state.mousedown = true;
@@ -117,7 +118,8 @@ function handleClearButtonClick(event) {
 //Add drawing border, "save" as img, add as message piece, then clear and hide canvas
 function finishDrawingAndClose(event) {
   event.preventDefault();
-  canvasContext.strokeStyle = '#333';
+  canvasContext.strokeStyle = '#111';
+  canvasContext.shadowColor = '#333';
   canvasContext.beginPath();
   canvasContext.rect(0, 0, 1000, 500);
   canvasContext.stroke();
@@ -144,6 +146,8 @@ function changeColour(event) {
 
   let colour = $(this).attr('data-fill');
   strokeStyle = colour;
+  let shadow = $(this).attr('data-shadow');
+  shadowColor = shadow;
   
   $(this).find('.crayon-paper').addClass('selected');
 }
