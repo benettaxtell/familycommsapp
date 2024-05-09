@@ -1,27 +1,11 @@
-
 /** DRAWING CANVAS ADAPTED FROM: https://codepen.io/honmanyau/pen/OoOMQR **/
-// =============
-// == Globals ==
-// =============
 
-//VARIOUS VARIABLES
+// =======================
+// == Various Variables ==
+// =======================
 let piece_i = 0
 let hasMsgPiece = false;
 let buildingMsg = false;
-
-//DRAWING
-const canvas = document.getElementById('drawing-area');
-const canvasContext = canvas.getContext('2d');
-canvasContext.fillStyle = "white";
-canvasContext.fillRect(0, 0, canvas.width, canvas.height);
-
-//BUTTONS
-const clearDrawing = $('#clear-drawing');
-const doneDrawing = $('#done-drawing');
-const drawButton = $('#new-drawing-btn');
-const colourButton = $('#crayons .crayon');
-
-
 const state = {
   mousedown: false
 };
@@ -29,28 +13,41 @@ const state = {
 // ==========================
 // == Canvas Configuration ==
 // ==========================
+const canvas = document.getElementById('drawing-area');
+const canvasContext = canvas.getContext('2d');
+canvasContext.fillStyle = "white";
+canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+
 const lineWidth = 10;
 const halfLineWidth = lineWidth / 2;
 let strokeStyle = '#111';
 let shadowColor = '#333';
 
+// =============
+// == Buttons ==
+// =============
+const clearDrawing = $('#clear-drawing');
+const doneDrawing = $('#done-drawing');
+const drawButton = $('#new-drawing-btn');
+const colourButton = $('#crayons .crayon');
+
 // =====================
 // == Event Listeners ==
 // =====================
-canvas.addEventListener('mousedown', handleWritingStart);
-canvas.addEventListener('mousemove', handleWritingInProgress);
-canvas.addEventListener('mouseup', handleDrawingEnd);
-canvas.addEventListener('mouseout', handleDrawingEnd);
-
-canvas.addEventListener('touchstart', handleWritingStart);
-canvas.addEventListener('touchmove', handleWritingInProgress);
-canvas.addEventListener('touchend', handleDrawingEnd);
-
-clearDrawing.on('click', handleClearButtonClick);
+clearDrawing.on('click', clearAndHideCanvas);
 doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
 colourButton.on('click', changeColour);
 $('#message').on('click', openBuildOptions);
+
+canvas.addEventListener('mousedown', startDrawing);
+canvas.addEventListener('mousemove', keepDrawing);
+canvas.addEventListener('mouseup', stopDrawing);
+canvas.addEventListener('mouseout', stopDrawing);
+
+canvas.addEventListener('touchstart', startDrawing);
+canvas.addEventListener('touchmove', keepDrawing);
+canvas.addEventListener('touchend', stopDrawing);
 
 // ====================
 // == Event Handlers ==
@@ -59,14 +56,14 @@ $('#message').on('click', openBuildOptions);
 //Show drawing canvas
 function openNewDrawing(event) {
   event.preventDefault();
-  if(buildingMsg) {
+  if (buildingMsg) {
     return false;
   }
-  document.getElementById('drawing').style.display = 'flex';
+  $('#drawing').css('display', 'flex');
 }
 
 //Set canvas stroke and set mousedown
-function handleWritingStart(event) {
+function startDrawing(event) {
   event.preventDefault();
 
   const mousePos = getMousePositionOnCanvas(event);
@@ -85,7 +82,7 @@ function handleWritingStart(event) {
 }
 
 //Draw ongoing stroke on canvas
-function handleWritingInProgress(event) {
+function keepDrawing(event) {
   event.preventDefault();
   
   if (state.mousedown) {
@@ -97,7 +94,7 @@ function handleWritingInProgress(event) {
 }
 
 //Set mousedown to false
-function handleDrawingEnd(event) {
+function stopDrawing(event) {
   event.preventDefault();
   
   if (state.mousedown) {
@@ -108,7 +105,7 @@ function handleDrawingEnd(event) {
 }
 
 //Empty canvas and hide
-function handleClearButtonClick(event) {
+function clearAndHideCanvas(event) {
   event.preventDefault();
   
   clearCanvas();
@@ -120,13 +117,14 @@ function finishDrawingAndClose(event) {
   event.preventDefault();
   canvasContext.strokeStyle = '#111';
   canvasContext.shadowColor = '#333';
+  //add a drawing border
   canvasContext.beginPath();
   canvasContext.rect(0, 0, 1000, 500);
   canvasContext.stroke();
-  
+  //make a jpeg of the canvas
   let canvasUrl = canvas.toDataURL("image/jpeg", 0.5);
   addMsgPiece(canvasUrl)
-  
+  //reset canvas for next drawing
   clearDrawing.click()
 }
 
@@ -144,10 +142,8 @@ function changeColour(event) {
   //turn off eraser effect
   canvasContext.globalCompositeOperation = 'source-over'
 
-  let colour = $(this).attr('data-fill');
-  strokeStyle = colour;
-  let shadow = $(this).attr('data-shadow');
-  shadowColor = shadow;
+  strokeStyle = $(this).attr('data-fill');
+  shadowColor = $(this).attr('data-shadow');
   
   $(this).find('.crayon-paper').addClass('selected');
 }
@@ -177,6 +173,7 @@ function addMsgPiece(msg) {
   $('#message').append("<div class='msg_piece' id='msg_piece"+piece_i+"'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");  
 }
 
+//Return current x, y coord of mouse
 function getMousePositionOnCanvas(event) {
   let clientX = event.clientX || event.touches[0].clientX;
   let clientY = event.clientY || event.touches[0].clientY;
@@ -187,7 +184,11 @@ function getMousePositionOnCanvas(event) {
   return { x: canvasX, y: canvasY };
 }
 
+//Erase everything on canvas and refill white background, reset selected brush to black crayon
 function clearCanvas() {
+  //reset to black crayon
+  $('#black-crayon').click()
+  //refill white for next drawing
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
   canvasContext.fillStyle = "white";
   canvasContext.fillRect(0, 0, canvas.width, canvas.height);
