@@ -131,9 +131,20 @@ function finishDrawingAndClose(event) {
 //set stroke style to the chosen colour based on data-fill attr (#RGB)
 function changeColour(event) {
   event.preventDefault()
+  $('.crayon-paper, #eraser').removeClass('selected');
+  
+  if ($(this).attr('id') == 'eraser') {
+    canvasContext.globalCompositeOperation = 'destination-out';
+    $(this).addClass('selected');
+	return
+  }
+
+  //turn off eraser effect
+  canvasContext.globalCompositeOperation = 'source-over'
+
   let colour = $(this).attr('data-fill');
   strokeStyle = colour;
-  $('.crayon-paper').removeClass('selected');
+  
   $(this).find('.crayon-paper').addClass('selected');
 }
 

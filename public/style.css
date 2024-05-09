@@ -253,15 +253,53 @@
   background: #444;
 }
 
+#eraser {
+  background: #F9F;
+  height: 60px;
+}
+/*#eraser:before {
+  content: '';
+  position: relative;
+  left: -30px;
+  top: 0;
+  width: 15px;
+  border-style: solid;
+  border-width: 0 15px 15px 0;
+  border-color: transparent #F0F;
+  z-index: inherit;
+}*/
+#eraser:after {
+  content: '';
+  position: relative;
+  left: 0;
+  /*top: -15px;*/
+  top:0;
+  width: 45px;
+  border-style: solid;
+  border-width: 0 15px 15px 0;
+  border-color: #F0F white;
+  z-index: inherit;
+}
+
 .crayon-paper.selected {
   animation: crayon-up 1s;
   height: 40px;
+}
+
+#eraser.selected {
+  animation: eraser-up 1s;
+  height: 80px;
 }
 
 @keyframes crayon-up
   {
     from {height:20px;} 
     to{height:40px;} 
+  }
+@keyframes eraser-up
+  {
+    from {height:60px;} 
+    to{height:80px;} 
   }
 
 /** CONNECTION **/
