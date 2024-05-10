@@ -7,7 +7,8 @@ let piece_i = 0
 let hasMsgPiece = false;
 let buildingMsg = false;
 const state = {
-  mousedown: false
+  mousedown: false,
+  movingpiece: null
 };
 
 // ==========================
@@ -66,7 +67,7 @@ function openNewDrawing(event) {
 function startDrawing(event) {
   event.preventDefault();
 
-  const mousePos = getMousePositionOnCanvas(event);
+  const mousePos = getMousePosition(event);
   
   canvasContext.beginPath();
   canvasContext.moveTo(mousePos.x, mousePos.y);
@@ -86,7 +87,7 @@ function keepDrawing(event) {
   event.preventDefault();
   
   if (state.mousedown) {
-    let mousePos = getMousePositionOnCanvas(event);
+    let mousePos = getMousePosition(event);
 
     canvasContext.lineTo(mousePos.x, mousePos.y);
     canvasContext.stroke();
@@ -157,9 +158,38 @@ function openBuildOptions(event) {
   
   $('#message .msg_piece').clone().appendTo('#pieces');
   $('#choose-blocks').css('display', 'flex');
+  setBuildMessageEvents()  
   
   //to stop cloning msg pieces on again and again
   buildingMsg = true;
+}
+
+//Select the message piece to move and save in state
+function selectPiece(event) {
+  event.preventDefault();
+  // get right target (if touch on drawing, get the container)
+  let $target = $(event.target);
+  if (!$target.hasClass('msg_piece')) {
+    $target = $($target.parent()[0]);
+  }
+  state.movingpiece = $target
+  state.movingpiece.addClass('moving')
+}
+
+//Move the currently selected piece to current coords
+function movePiece(event) {
+  event.preventDefault();
+  
+  const mousePos = getMousePosition(event);
+  state.movingpiece.css({'top': mousePos.y, 'left': mousePos.x})
+}
+
+//Drop the currently selected piece where it is and reset state
+function dropPiece(event) {
+  event.preventDefault();
+  
+  state.movingpiece.removeClass('moving');
+  state.movingpiece = null;
 }
 
 // ======================
@@ -173,8 +203,19 @@ function addMsgPiece(msg) {
   $('#message').append("<div class='msg_piece' id='msg_piece"+piece_i+"'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");  
 }
 
+//Set the touch events for message pieces in the build message frame after they're added
+function setBuildMessageEvents() {
+  $('#pieces .msg_piece').on('mousedown', selectPiece)
+  $('#pieces .msg_piece').on('mousemove', movePiece)
+  $('#pieces .msg_piece').on('mouseup', dropPiece)
+
+  $('#pieces .msg_piece').on('touchstart', selectPiece)
+  $('#pieces .msg_piece').on('touchmove', movePiece)
+  $('#pieces .msg_piece').on('touchend', dropPiece)
+}
+
 //Return current x, y coord of mouse
-function getMousePositionOnCanvas(event) {
+function getMousePosition(event) {
   let clientX = event.clientX || event.touches[0].clientX;
   let clientY = event.clientY || event.touches[0].clientY;
   let { offsetLeft, offsetTop } = event.target;

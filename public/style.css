@@ -380,7 +380,12 @@
   flex-flow: column nowrap;
 }
 
+#pieces .msg_piece.moving {
+  position: absolute;
+}
+
 .build-option {
-  width: 45%;
+  width: 80%;
   height: auto;
+  margin-left: 10%;
 }
