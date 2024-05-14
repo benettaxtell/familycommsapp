@@ -191,8 +191,7 @@ function selectBlock(event) {
 function moveBlock(event) {
   event.preventDefault();
   
-  const mousePos = getMousePosition(event);
-  state.movingblock.css({'top': mousePos.y, 'left': mousePos.x})
+  state.movingblock.css({'top': getY(event), 'left': getX(event)})
 }
 
 //Drop the currently selected piece where it is and reset state
@@ -226,10 +225,20 @@ function addMsgPiece(msg) {
   hasMsgPiece = true;
 }
 
+//return the raw click/touch X without doing math
+function getX(event) {
+  return event.clientX || event.touches[0].clientX;
+}
+
+//return the raw click/touch Y without doing math
+function getY(event) {
+  return event.clientY || event.touches[0].clientY;
+}
+
 //Return current x, y coord of mouse
 function getMousePosition(event) {
-  let clientX = event.clientX || event.touches[0].clientX;
-  let clientY = event.clientY || event.touches[0].clientY;
+  let clientX = getX(event);
+  let clientY = getY(event);
   let { offsetLeft, offsetTop } = event.target;
   let canvasX = clientX - offsetLeft;
   let canvasY = clientY - offsetTop;
