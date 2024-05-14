@@ -185,6 +185,7 @@ function selectBlock(event) {
   state.blockpos.top = $target.css('top')
   state.blockpos.left = $target.css('left')
   state.movingblock.addClass('moving')
+  
 }
 
 //Move the currently selected piece to current coords
@@ -192,6 +193,12 @@ function moveBlock(event) {
   event.preventDefault();
   
   state.movingblock.css({'top': getY(event), 'left': getX(event)})
+  
+  if (isOverDiv({'y': getY(event), 'x': getX(event)}, $('#tube'), ':before'))
+    $('#tube').addClass('hasmsg')
+  else
+    $('#tube').removeClass('hasmsg')
+  
 }
 
 //Drop the currently selected piece where it is and reset state
@@ -199,10 +206,14 @@ function dropBlock(event) {
   event.preventDefault();
   
   state.movingblock.removeClass('moving')
-  state.movingblock.css('top', state.blockpos.top)
-  state.movingblock.css('left', state.blockpos.left)
+  
+  if (!$('#tube').hasClass('hasmsg')){
+    state.movingblock.css('top', state.blockpos.top)
+    state.movingblock.css('left', state.blockpos.left)
+    state.blockpos = {'top': 0, 'left': 0}
+  }
   state.movingblock = null;
-  state.blockpos = {'top': 0, 'left': 0}
+  $('#tube').removeClass('hasmsg')
 }
 
 // ======================
@@ -254,4 +265,31 @@ function clearCanvas() {
   canvasContext.clearRect(0, 0, canvas.width, canvas.height);
   canvasContext.fillStyle = "white";
   canvasContext.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+
+//Return true iff given point is over given div
+// (optionally handles :before and :after by passing that string to bef)
+// a-------b
+// |       |
+// |  div  |
+// | x     |
+// c-------d
+// between a and b (top,left) and (top, left+w)
+// AND
+// between a and c (top,left) and (top-h, left)
+// l < x < l + w
+// t < y < t + h
+let x, y, t, l, w, h, s = 0 
+function isOverDiv(pos, div, bef) {
+  s = window.getComputedStyle(div[0], bef);
+  x = parseInt(pos.x)
+  y = parseInt(pos.y)
+  t = parseInt(div.offset().top)
+  l = parseInt(div.offset().left)
+  w = parseInt(s.width)
+  h = parseInt(s.height)
+  //console.log('l ' +l +'<' + x +'<'+ l +'+'+ w)
+  //console.log('t ' +t +'<' + y +'<'+ t +'+'+ h)
+  return l < x && x < l+w && t < y && y < t+h
 }

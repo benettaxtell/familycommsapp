@@ -95,6 +95,12 @@
   z-index: inherit;
 }
 
+#tube.hasmsg:before { 
+  border-top: 50px solid transparent;
+  border-left: 200px solid #7396ff;
+  border-bottom: 50px solid transparent;
+}
+
 #broken-tube {
   width: 0;
   height: 0;
