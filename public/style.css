@@ -312,35 +312,41 @@
 #msg_piece {
   position: absolute;
   bottom: 5vh;
-  left: 4vw;  
+  left: 4vw;
 }
 
 #castle {
   width: 200px;
   height: auto;
-  position: relative;
-  bottom: -200px;
-  left: 0;
+  position: absolute;
+  bottom: -1vh;
+  left: -1vw;
 }
 
 #castle.castle_size1 {
-  width: 200px;
+  width: 225px;
+  height: auto;
+  bottom: 0;
+}
+
+#castle.castle_size2 {
+  width: 425px;
   height: auto;
 }
 
-#castle.castle_size2, #castle.castle_size3 {
-  width: 400px;
+#castle.castle_size3 {
+  width: 475px;
   height: auto;
 }
 
 #pieces {
-  width: 350px;
-  height: 250px;
+  width: 400px;
+  height: 300px;
   display: flex;
   flex-flow: column-reverse wrap;
-  
+  gap: 15%;
   position: relative;
-  bottom: 100px;
+  bottom: 0;
   left: 0;
 }
 
