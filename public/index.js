@@ -11,6 +11,8 @@ const state = {
   movingpiece: null
 };
 
+const castle_pieces = ['blockpiece.png', 'tower.png', 'castle_1tower.png', 'castle.png']
+
 // ==========================
 // == Canvas Configuration ==
 // ==========================
@@ -39,8 +41,9 @@ clearDrawing.on('click', clearAndHideCanvas);
 doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
 colourButton.on('click', changeColour);
-$('#message').on('click', openBuildOptions);
+//$('#message').on('click', openBuildOptions);
 
+//TODO: to fix wonky click events, just have it click to select, then move, then click to deselect
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', keepDrawing);
 canvas.addEventListener('mouseup', stopDrawing);
@@ -49,7 +52,6 @@ canvas.addEventListener('mouseout', stopDrawing);
 canvas.addEventListener('touchstart', startDrawing);
 canvas.addEventListener('touchmove', keepDrawing);
 canvas.addEventListener('touchend', stopDrawing);
-
 // ====================
 // == Event Handlers ==
 // ====================
@@ -198,9 +200,18 @@ function dropPiece(event) {
 
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
-  hasMsgPiece = true;
+  if (!hasMsgPiece) {
+    $('#message').append("<div id='msg_piece'><img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div></div>");
+  } else {
+    //replace img source with next, and place next image (msg)
+	$('#msg_piece #castle').attr('src', 'img/' + castle_pieces[piece_i])
+	  .removeClass('castle_size' + (piece_i-1))
+	  .addClass('castle_size' + piece_i)
+	$('#msg_piece #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
+  }
   piece_i += 1
-  $('#message').append("<div class='msg_piece' id='msg_piece"+piece_i+"'><img class='block_piece' src='img/blockpiece.png' /><img class='drawing_msg' src='" + msg + "' /></div>");  
+
+  hasMsgPiece = true;
 }
 
 //Set the touch events for message pieces in the build message frame after they're added

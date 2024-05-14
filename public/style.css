@@ -309,56 +309,48 @@
 }
 
 /** MESSAGE PIECES **/
-.msg_piece {
-  width: 175px;
-  height: 175px;
-}
-#message .msg_piece {
+#msg_piece {
   position: absolute;
-  top: 80vh;
-  left: 5vw;
+  bottom: 5vh;
+  left: 4vw;  
 }
 
-#message #msg_piece1{
-  top: 80vh;
-  left: 5vw;
-  z-index: 10;
-}
-
-#message #msg_piece2{
-  top: 78vh;
-  left: 7vw;
-  z-index: 9;
-}
-
-#message #msg_piece3{
-  top: 76vh;
-  left: 3vw;
-  z-index: 8;
-}
-
-#message #msg_piece4{
-  top: 74vh;
-  left: 8vw;
-  z-index: 7;
-}
-
-.block_piece {
-  width: 175px;
+#castle {
+  width: 200px;
   height: auto;
   position: relative;
-  top: 0;
+  bottom: -200px;
+  left: 0;
+}
+
+#castle.castle_size1 {
+  width: 200px;
+  height: auto;
+}
+
+#castle.castle_size2, #castle.castle_size3 {
+  width: 400px;
+  height: auto;
+}
+
+#pieces {
+  width: 350px;
+  height: 250px;
+  display: flex;
+  flex-flow: column-reverse wrap;
+  
+  position: relative;
+  bottom: 100px;
   left: 0;
 }
 
 .drawing_msg {
-  width: 125px;
+  width: 40%;
   height: auto;
-  position: relative;
-  top: -100px;
-  left: 35px;
   transform: rotateY(-30deg) rotateX(6deg) rotateZ(-5deg);
+  margin: 5%;
 }
+
 #message .drawing_msg{
   animation: newpiece 2s;	
 }
@@ -368,28 +360,3 @@
     from {left: 45vw;} 
     to{left:35px;} 
   }
-  
-/** MAKING MESSAGE **/
-#built-blocks {
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-between;
-}
-
-#pieces {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-#pieces .msg_piece.moving {
-  position: absolute;
-}
-
-#build-options {
-  width: 80%;
-}
-.build-option {
-  height: 100%;
-  width: 80%;
-  margin-left: 10%;
-}
