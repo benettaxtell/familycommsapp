@@ -56,6 +56,10 @@
 #blocks>.block:nth-child(4) { transform:rotate(-2deg); left: 4vw; top: 90vh; }
 #blocks>.block:nth-child(5) { transform:rotate(6deg); left: 3vw; top: 87vh; }
 
+.block.moving {
+  position: absolute;
+}
+
 /* FOOTER */
 #tube {
   width: 70%;
@@ -311,7 +315,7 @@
 /** MESSAGE PIECES **/
 #msg_piece {
   position: absolute;
-  bottom: 5vh;
+  bottom: 10vh;
   left: 4vw;
 }
 
@@ -358,7 +362,7 @@
 }
 
 #message .drawing_msg{
-  animation: newpiece 2s;	
+  animation: newpiece 2s;
 }
 
 @keyframes newpiece

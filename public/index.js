@@ -8,7 +8,8 @@ let hasMsgPiece = false;
 let buildingMsg = false;
 const state = {
   mousedown: false,
-  movingpiece: null
+  movingblock: null,
+  blockpos: {'top': 0, 'left': 0}
 };
 
 const castle_pieces = ['blockpiece.png', 'tower.png', 'castle_1tower.png', 'castle.png']
@@ -41,7 +42,6 @@ clearDrawing.on('click', clearAndHideCanvas);
 doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
 colourButton.on('click', changeColour);
-//$('#message').on('click', openBuildOptions);
 
 //TODO: to fix wonky click events, just have it click to select, then move, then click to deselect
 canvas.addEventListener('mousedown', startDrawing);
@@ -52,6 +52,15 @@ canvas.addEventListener('mouseout', stopDrawing);
 canvas.addEventListener('touchstart', startDrawing);
 canvas.addEventListener('touchmove', keepDrawing);
 canvas.addEventListener('touchend', stopDrawing);
+
+$('.block').on('mousedown', selectBlock)
+$('.block').on('mousemove', moveBlock)
+$('.block').on('mouseup', dropBlock)
+
+$('.block').on('touchstart', selectBlock)
+$('.block').on('touchmove', moveBlock)
+$('.block').on('touchend', dropBlock)
+
 // ====================
 // == Event Handlers ==
 // ====================
@@ -167,31 +176,34 @@ function openBuildOptions(event) {
 }
 
 //Select the message piece to move and save in state
-function selectPiece(event) {
+function selectBlock(event) {
   event.preventDefault();
   // get right target (if touch on drawing, get the container)
   let $target = $(event.target);
-  if (!$target.hasClass('msg_piece')) {
-    $target = $($target.parent()[0]);
-  }
-  state.movingpiece = $target
-  state.movingpiece.addClass('moving')
+
+  state.movingblock = $target
+  state.blockpos.top = $target.css('top')
+  state.blockpos.left = $target.css('left')
+  state.movingblock.addClass('moving')
 }
 
 //Move the currently selected piece to current coords
-function movePiece(event) {
+function moveBlock(event) {
   event.preventDefault();
   
   const mousePos = getMousePosition(event);
-  state.movingpiece.css({'top': mousePos.y, 'left': mousePos.x})
+  state.movingblock.css({'top': mousePos.y, 'left': mousePos.x})
 }
 
 //Drop the currently selected piece where it is and reset state
-function dropPiece(event) {
+function dropBlock(event) {
   event.preventDefault();
   
-  state.movingpiece.removeClass('moving');
-  state.movingpiece = null;
+  state.movingblock.removeClass('moving')
+  state.movingblock.css('top', state.blockpos.top)
+  state.movingblock.css('left', state.blockpos.left)
+  state.movingblock = null;
+  state.blockpos = {'top': 0, 'left': 0}
 }
 
 // ======================
@@ -212,17 +224,6 @@ function addMsgPiece(msg) {
   piece_i += 1
 
   hasMsgPiece = true;
-}
-
-//Set the touch events for message pieces in the build message frame after they're added
-function setBuildMessageEvents() {
-  $('#pieces .msg_piece').on('mousedown', selectPiece)
-  $('#pieces .msg_piece').on('mousemove', movePiece)
-  $('#pieces .msg_piece').on('mouseup', dropPiece)
-
-  $('#pieces .msg_piece').on('touchstart', selectPiece)
-  $('#pieces .msg_piece').on('touchmove', movePiece)
-  $('#pieces .msg_piece').on('touchend', dropPiece)
 }
 
 //Return current x, y coord of mouse
