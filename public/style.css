@@ -68,6 +68,7 @@
   top: 90vh;
   margin-left: 20%;
   background: #2d00b3;
+  opacity: 0.8;
   z-index: 100;
 }
 #tube:before {
@@ -357,6 +358,6 @@
 
 @keyframes newpiece
   {
-    from {left: 45vw;} 
-    to{left:35px;} 
+    from {left: 45vw;}
+    to{left:35px;}
   }

@@ -207,12 +207,17 @@ function dropBlock(event) {
   
   state.movingblock.removeClass('moving')
   
-  if (!$('#tube').hasClass('hasmsg')){
-    state.movingblock.css('top', state.blockpos.top)
-    state.movingblock.css('left', state.blockpos.left)
-    state.blockpos = {'top': 0, 'left': 0}
+  if ($('#tube').hasClass('hasmsg')) {
+    //"send" message (not actually sending yet, but it'll look pretty)
+	state.movingblock.animate({'left':'85%', 'top':'90vh', 'opacity': 1}, 1500, function() {
+		$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function() {
+			$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, resetBlock)
+		})
+	})
+  } else {
+    resetBlock()
   }
-  state.movingblock = null;
+  
   $('#tube').removeClass('hasmsg')
 }
 
@@ -267,6 +272,15 @@ function clearCanvas() {
   canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+//Move block back to its starting place and clear out vars
+function resetBlock(){
+  state.movingblock.css('top', state.blockpos.top)
+  state.movingblock.css('left', state.blockpos.left)
+  state.movingblock.css('opacity', 1)
+  state.blockpos = {'top': 0, 'left': 0}
+  
+  state.movingblock = null;
+}
 
 //Return true iff given point is over given div
 // (optionally handles :before and :after by passing that string to bef)
