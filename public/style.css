@@ -326,27 +326,11 @@
 }
 
 #castle {
-  width: 200px;
+  width: 475px;
   height: auto;
   position: absolute;
   bottom: -1vh;
   left: -1vw;
-}
-
-#castle.castle_size1 {
-  width: 225px;
-  height: auto;
-  bottom: 0;
-}
-
-#castle.castle_size2 {
-  width: 425px;
-  height: auto;
-}
-
-#castle.castle_size3 {
-  width: 475px;
-  height: auto;
 }
 
 #pieces {

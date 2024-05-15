@@ -12,7 +12,7 @@ const state = {
   blockpos: {'top': 0, 'left': 0}
 };
 
-const castle_pieces = ['blockpiece.png', 'tower.png', 'castle_1tower.png', 'castle.png']
+const castle_pieces = ['blockpiece_crop.png', 'tower_crop.png', 'castle1tower_crop.png', 'castle_crop.png']
 
 // ==========================
 // == Canvas Configuration ==
