@@ -9,7 +9,7 @@ let buildingMsg = false;
 const state = {
   mousedown: false,
   movingblock: null,
-  blockpos: {'top': 0, 'left': 0}
+  sendingblocks: []
 };
 
 const castle_pieces = ['blockpiece_crop.png', 'tower_crop.png', 'castle1tower_crop.png', 'castle_crop.png']
@@ -182,8 +182,6 @@ function selectBlock(event) {
   let $target = $(event.target);
 
   state.movingblock = $target
-  state.blockpos.top = $target.css('top')
-  state.blockpos.left = $target.css('left')
   state.movingblock.addClass('moving')
   
 }
@@ -191,6 +189,7 @@ function selectBlock(event) {
 //Move the currently selected piece to current coords
 function moveBlock(event) {
   event.preventDefault();
+  if (state.movingblock == null) return
   
   state.movingblock.css({'top': getY(event), 'left': getX(event)})
   
@@ -206,16 +205,19 @@ function dropBlock(event) {
   event.preventDefault();
   
   state.movingblock.removeClass('moving')
-  
+  state.sendingblocks.push(state.movingblock)
+  state.movingblock = null
+  let send = state.sendingblocks[state.sendingblocks.length - 1]
+  let send_i = state.sendingblocks.length - 1
   if ($('#tube').hasClass('hasmsg')) {
     //"send" message (not actually sending yet, but it'll look pretty)
-	state.movingblock.animate({'left':'85%', 'top':'90vh', 'opacity': 1}, 1500, function() {
+	send.animate({'left':'85%', 'top':'90vh', 'opacity': 1}, 1500, function() {
 		$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function() {
-			$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, resetBlock)
+			$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function(){ resetBlock($(this), send_i)})
 		})
 	})
   } else {
-    resetBlock()
+    resetBlock(send, send_i)
   }
   
   $('#tube').removeClass('hasmsg')
@@ -272,14 +274,13 @@ function clearCanvas() {
   canvasContext.fillRect(0, 0, canvas.width, canvas.height);
 }
 
-//Move block back to its starting place and clear out vars
-function resetBlock(){
-  state.movingblock.css('top', state.blockpos.top)
-  state.movingblock.css('left', state.blockpos.left)
-  state.movingblock.css('opacity', 1)
-  state.blockpos = {'top': 0, 'left': 0}
+//Move sent block back to its starting place and clear out vars
+function resetBlock(send, send_i){
+  send.css('top', "")
+  send.css('left', "")
+  send.css('opacity', 1)
   
-  state.movingblock = null;
+  state.sendingblocks.splice(send_i, 1)
 }
 
 //Return true iff given point is over given div
