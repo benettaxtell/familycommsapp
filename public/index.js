@@ -5,7 +5,6 @@
 // =======================
 let piece_i = 0
 let hasMsgPiece = false;
-let buildingMsg = false;
 const state = {
   mousedown: false,
   movingblock: null,
@@ -68,9 +67,6 @@ $('.block').on('touchend', dropBlock)
 //Show drawing canvas
 function openNewDrawing(event) {
   event.preventDefault();
-  if (buildingMsg) {
-    return false;
-  }
   $('#drawing').css('display', 'flex');
 }
 
@@ -158,21 +154,6 @@ function changeColour(event) {
   shadowColor = $(this).attr('data-shadow');
   
   $(this).find('.crayon-paper').addClass('selected');
-}
-
-//Display build options
-function openBuildOptions(event) {
-  event.preventDefault()
-  if(!hasMsgPiece || buildingMsg) {
-	  return false;
-  }
-  
-  $('#message .msg_piece').clone().appendTo('#pieces');
-  $('#choose-blocks').css('display', 'flex');
-  setBuildMessageEvents()  
-  
-  //to stop cloning msg pieces on again and again
-  buildingMsg = true;
 }
 
 //Select the message piece to move and save in state
