@@ -56,10 +56,6 @@
 #blocks>.block:nth-child(4) { transform:rotate(-2deg); left: 4vw; top: 90vh; }
 #blocks>.block:nth-child(5) { transform:rotate(6deg); left: 3vw; top: 87vh; }
 
-.block.moving {
-  position: absolute;
-}
-
 /* FOOTER */
 #tube {
   width: 70%;
@@ -320,18 +316,12 @@
 }
 
 /** MESSAGE PIECES **/
-#msg_piece {
-  position: absolute;
-  bottom: 10vh;
-  left: 4vw;
-}
-
 #castle {
   width: 475px;
   height: auto;
   position: absolute;
-  bottom: -1vh;
-  left: -1vw;
+  bottom: 10vh;
+  left: 4vw;
 }
 
 #pieces {
@@ -340,9 +330,9 @@
   display: flex;
   flex-flow: column-reverse wrap;
   gap: 15%;
-  position: relative;
-  bottom: 0;
-  left: 0;
+  position: absolute;
+  bottom: 10vh;
+  left: 5vw;
 }
 
 .drawing_msg {
@@ -352,7 +342,7 @@
   margin: 5%;
 }
 
-#message .drawing_msg{
+#msg_area .drawing_msg{
   animation: newpiece 2s;
 }
 
@@ -361,3 +351,8 @@
     from {left: 45vw;}
     to{left:35px;}
   }
+  
+  
+.block.moving, #message.moving {
+  position: absolute;
+}

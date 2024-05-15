@@ -7,6 +7,7 @@ let piece_i = 0
 let hasMsgPiece = false;
 const state = {
   mousedown: false,
+  movingmessage: false,
   movingblock: null,
   sendingblocks: []
 };
@@ -42,7 +43,8 @@ doneDrawing.on('click', finishDrawingAndClose);
 drawButton.on('click', openNewDrawing);
 colourButton.on('click', changeColour);
 
-//TODO: to fix wonky click events, just have it click to select, then move, then click to deselect
+//TODO: to fix wonky click events, just have it click to select,
+//then move, then click to deselect
 canvas.addEventListener('mousedown', startDrawing);
 canvas.addEventListener('mousemove', keepDrawing);
 canvas.addEventListener('mouseup', stopDrawing);
@@ -59,6 +61,14 @@ $('.block').on('mouseup', dropBlock)
 $('.block').on('touchstart', selectBlock)
 $('.block').on('touchmove', moveBlock)
 $('.block').on('touchend', dropBlock)
+
+$('#message').on('mousedown', selectMessage)
+$('#message').on('mousemove', moveMessage)
+$('#message').on('mouseup', dropMessage)
+
+$('#message').on('touchstart', selectMessage)
+$('#message').on('touchmove', moveMessage)
+$('#message').on('touchend', dropMessage)
 
 // ====================
 // == Event Handlers ==
@@ -156,49 +166,80 @@ function changeColour(event) {
   $(this).find('.crayon-paper').addClass('selected');
 }
 
-//Select the message piece to move and save in state
+//Select the block piece to move and save in state
 function selectBlock(event) {
   event.preventDefault();
-  // get right target (if touch on drawing, get the container)
-  let $target = $(event.target);
-
-  state.movingblock = $target
-  state.movingblock.addClass('moving')
   
+  state.movingblock = $(event.target);
+  state.movingblock.addClass('moving')
+}
+//Select the message to move and save in state
+function selectMessage(event) {
+  event.preventDefault();
+  
+  state.movingmessage = true
+  $('#castle, #pieces').addClass('moving')
 }
 
-//Move the currently selected piece to current coords
+//Move the currently selected block to current coords
 function moveBlock(event) {
   event.preventDefault();
-  if (state.movingblock == null) return
   
-  state.movingblock.css({'top': getY(event), 'left': getX(event)})
+  if (state.movingblock == null) return
+  moveThing(event, state.movingblock)
+}
+//Move the message to current coords
+function moveMessage(event) {
+  event.preventDefault();
+  
+  if (!state.movingmessage) return
+  moveThing(event, $('#castle, #pieces'))
+}
+//Move the current thing to current coords
+function moveThing(event, thing) {
+  event.preventDefault();
+  
+  thing.css({'top': getY(event), 'left': getX(event)})
   
   if (isOverDiv({'y': getY(event), 'x': getX(event)}, $('#tube'), ':before'))
     $('#tube').addClass('hasmsg')
   else
     $('#tube').removeClass('hasmsg')
-  
 }
 
-//Drop the currently selected piece where it is and reset state
+//Drop the currently selected block where it is and reset state
 function dropBlock(event) {
   event.preventDefault();
   
-  state.movingblock.removeClass('moving')
   state.sendingblocks.push(state.movingblock)
   state.movingblock = null
   let send = state.sendingblocks[state.sendingblocks.length - 1]
   let send_i = state.sendingblocks.length - 1
+  dropThing(event, send, send_i)
+}
+
+//Drop the message where it is and reset state
+function dropMessage(event) {
+  event.preventDefault();
+  
+  dropThing(event, $('#castle, #pieces'), -1)
+  state.movingmessage = false
+}
+
+//Drop the currently selected thing where it is and reset state
+function dropThing(event, thing, send_i) {
+  thing.removeClass('moving')
+  state.sendingblocks.push(state.movingblock)
+  state.movingblock = null
   if ($('#tube').hasClass('hasmsg')) {
     //"send" message (not actually sending yet, but it'll look pretty)
-	send.animate({'left':'85%', 'top':'90vh', 'opacity': 1}, 1500, function() {
+	thing.animate({'left':'85%', 'top':'90vh', 'opacity': 1}, 1500, function() {
 		$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function() {
 			$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function(){ resetBlock($(this), send_i)})
 		})
 	})
   } else {
-    resetBlock(send, send_i)
+    resetBlock(thing, send_i)
   }
   
   $('#tube').removeClass('hasmsg')
@@ -211,13 +252,13 @@ function dropBlock(event) {
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
   if (!hasMsgPiece) {
-    $('#message').append("<div id='msg_piece'><img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div></div>");
+    $('#message').append("<img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div>");
   } else {
     //replace img source with next, and place next image (msg)
-	$('#msg_piece #castle').attr('src', 'img/' + castle_pieces[piece_i])
+	$('#message #castle').attr('src', 'img/' + castle_pieces[piece_i])
 	  .removeClass('castle_size' + (piece_i-1))
 	  .addClass('castle_size' + piece_i)
-	$('#msg_piece #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
+	$('#message #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
   }
   piece_i += 1
 
@@ -261,7 +302,8 @@ function resetBlock(send, send_i){
   send.css('left', "")
   send.css('opacity', 1)
   
-  state.sendingblocks.splice(send_i, 1)
+  if (send_i >= 0)
+    state.sendingblocks.splice(send_i, 1)
 }
 
 //Return true iff given point is over given div
