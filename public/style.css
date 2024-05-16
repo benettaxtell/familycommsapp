@@ -346,6 +346,29 @@
   animation: newpiece 2s;
 }
 
+#msg_area #msg_range {
+  position: absolute;
+  bottom: 10vh;
+  left: 5vw;
+}
+
+#msg_area .msg_range0 {
+  width: 225px;
+  height: 200px;
+}
+#msg_area .msg_range1 {
+  width: 225px;
+  height: 300px;
+}
+#msg_area .msg_range2 {
+  width: 450px;
+  height: 300px;
+}
+#msg_area .msg_range3 {
+  width: 450px;
+  height: 300px;
+}
+
 @keyframes newpiece
   {
     from {left: 45vw;}

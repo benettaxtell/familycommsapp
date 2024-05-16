@@ -61,15 +61,15 @@ $('.block').on('mouseup', dropBlock)
 $('.block').on('touchstart', selectBlock)
 $('.block').on('touchmove', moveBlock)
 $('.block').on('touchend', dropBlock)
-setMoveTouches()
+//need to set these after we add the div
 function setMoveTouches(){
-  $('#pieces > img').on('mousedown', selectMessage)
-  $('#pieces > img').on('mousemove', moveMessage)
-  $('#pieces > img').on('mouseup', dropMessage)
+  $('#msg_range').on('mousedown', selectMessage)
+  $('#msg_range').on('mousemove', moveMessage)
+  $('#msg_range').on('mouseup', dropMessage)
 
-  $('#pieces > img').on('touchstart', selectMessage)
-  $('#pieces > img').on('touchmove', moveMessage)
-  $('#pieces > img').on('touchend', dropMessage)
+  $('#msg_range').on('touchstart', selectMessage)
+  $('#msg_range').on('touchmove', moveMessage)
+  $('#msg_range').on('touchend', dropMessage)
 }
 // ====================
 // == Event Handlers ==
@@ -247,18 +247,19 @@ function dropThing(event, thing, send_i) {
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
   if (!hasMsgPiece) {
-    $('#msg_area').append("<img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div>");
+    $('#message').append("<img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div><div id='msg_range' class='msg_range"+piece_i+"'></div>");
+    setMoveTouches()
   } else {
     //replace img source with next, and place next image (msg)
-	$('#msg_area #castle').attr('src', 'img/' + castle_pieces[piece_i])
+	$('#message #castle').attr('src', 'img/' + castle_pieces[piece_i])
 	  .removeClass('castle_size' + (piece_i-1))
 	  .addClass('castle_size' + piece_i)
-	$('#msg_area #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
+	$('#message #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
+	$('#msg_range').removeClass('msg_range'+(piece_i-1)).addClass('msg_range'+piece_i)
   }
   piece_i += 1
 
   hasMsgPiece = true;
-  setMoveTouches()
 }
 
 //return the raw click/touch X without doing math
