@@ -61,15 +61,16 @@ $('.block').on('mouseup', dropBlock)
 $('.block').on('touchstart', selectBlock)
 $('.block').on('touchmove', moveBlock)
 $('.block').on('touchend', dropBlock)
+setMoveTouches()
+function setMoveTouches(){
+  $('#pieces > img').on('mousedown', selectMessage)
+  $('#pieces > img').on('mousemove', moveMessage)
+  $('#pieces > img').on('mouseup', dropMessage)
 
-$('#message').on('mousedown', selectMessage)
-$('#message').on('mousemove', moveMessage)
-$('#message').on('mouseup', dropMessage)
-
-$('#message').on('touchstart', selectMessage)
-$('#message').on('touchmove', moveMessage)
-$('#message').on('touchend', dropMessage)
-
+  $('#pieces > img').on('touchstart', selectMessage)
+  $('#pieces > img').on('touchmove', moveMessage)
+  $('#pieces > img').on('touchend', dropMessage)
+}
 // ====================
 // == Event Handlers ==
 // ====================
@@ -197,11 +198,9 @@ function moveMessage(event) {
 }
 //Move the current thing to current coords
 function moveThing(event, thing) {
-  event.preventDefault();
+  thing.css({'top': getY(event, thing.height()), 'left': getX(event)})
   
-  thing.css({'top': getY(event), 'left': getX(event)})
-  
-  if (isOverDiv({'y': getY(event), 'x': getX(event)}, $('#tube'), ':before'))
+  if (isOverDiv({'y': getY(event, 0), 'x': getX(event)}, $('#tube'), ':before'))
     $('#tube').addClass('hasmsg')
   else
     $('#tube').removeClass('hasmsg')
@@ -229,14 +228,10 @@ function dropMessage(event) {
 //Drop the currently selected thing where it is and reset state
 function dropThing(event, thing, send_i) {
   thing.removeClass('moving')
-  state.sendingblocks.push(state.movingblock)
-  state.movingblock = null
   if ($('#tube').hasClass('hasmsg')) {
     //"send" message (not actually sending yet, but it'll look pretty)
 	thing.animate({'left':'85%', 'top':'90vh', 'opacity': 1}, 1500, function() {
-		$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function() {
-			$(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function(){ resetBlock($(this), send_i)})
-		})
+      $(this).animate({'left':'85%', 'top':'80vh', 'opacity': 0}, 1000, function() {resetBlock($(this), send_i)})
 	})
   } else {
     resetBlock(thing, send_i)
@@ -252,17 +247,18 @@ function dropThing(event, thing, send_i) {
 //Add new divs for a msg piece showing the given msg
 function addMsgPiece(msg) {
   if (!hasMsgPiece) {
-    $('#message').append("<img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div>");
+    $('#msg_area').append("<img id='castle' class='castle_size"+piece_i+"' src='img/"+castle_pieces[piece_i]+"' /><div id='pieces'><img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' /></div>");
   } else {
     //replace img source with next, and place next image (msg)
-	$('#message #castle').attr('src', 'img/' + castle_pieces[piece_i])
+	$('#msg_area #castle').attr('src', 'img/' + castle_pieces[piece_i])
 	  .removeClass('castle_size' + (piece_i-1))
 	  .addClass('castle_size' + piece_i)
-	$('#message #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
+	$('#msg_area #pieces').append("<img id='drawing_msg"+piece_i+"' class='drawing_msg' src='" + msg + "' />")
   }
   piece_i += 1
 
   hasMsgPiece = true;
+  setMoveTouches()
 }
 
 //return the raw click/touch X without doing math
@@ -271,14 +267,14 @@ function getX(event) {
 }
 
 //return the raw click/touch Y without doing math
-function getY(event) {
-  return event.clientY || event.touches[0].clientY;
+function getY(event, height) {
+  return (event.clientY || event.touches[0].clientY) - parseInt(height);
 }
 
 //Return current x, y coord of mouse
 function getMousePosition(event) {
   let clientX = getX(event);
-  let clientY = getY(event);
+  let clientY = getY(event, 0);
   let { offsetLeft, offsetTop } = event.target;
   let canvasX = clientX - offsetLeft;
   let canvasY = clientY - offsetTop;
@@ -297,7 +293,7 @@ function clearCanvas() {
 }
 
 //Move sent block back to its starting place and clear out vars
-function resetBlock(send, send_i){
+function resetBlock(send, send_i, replace){
   send.css('top', "")
   send.css('left', "")
   send.css('opacity', 1)
